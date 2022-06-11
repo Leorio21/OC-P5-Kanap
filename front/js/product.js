@@ -2,7 +2,11 @@ function collectProduct() {
     let url = new URL(window.location.href);
     let id = url.searchParams.get("id");
 
-    fetch("http://localhost:3000/api/products/" + id)
+    return fetch("http://localhost:3000/api/products/" + id)
+}
+
+function displayProduct() {
+    collectProduct()
     .then(function(res) {
         if (res.ok) {
             return res.json();
@@ -38,4 +42,4 @@ function collectProduct() {
     })
 }
 
-collectProduct();
+displayProduct();
