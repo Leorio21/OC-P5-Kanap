@@ -1,8 +1,17 @@
+/**
+ * It fetches a product from the server and returns the product as a JSON object.
+ * @param [id] - The id of the product you want to fetch.
+ * @returns A promise.
+ */
 async function fetchProduct(id = "") {
     const products= await fetch(`http://localhost:3000/api/products/${id}`)
     return products.json();
 }
 
+/**
+ * It fetches the products from the API, then loops through the products and creates a link, article,
+ * image, title and description for each product.
+ */
 async function displayProducts() {
     const products = await fetchProduct()
 
@@ -38,71 +47,35 @@ async function displayProducts() {
 
 displayProducts();
 
-
-/*
-let obj1 = {
-    "name" : "toto",
-    "id" : 1,
-    "color" : "blue",
-    "qty" : 1
-}
-
-let obj2 = {
-    "name" : "toto",
-    "id" : 1,
-    "color" : "red",
-    "qty" : 1
-}
+/*function test() {
 
 
-let obj3 = {
-    "name" : "titi",
-    "id" : 2,
-    "color" : "red",
-    "qty" : 1
-}
+    let inCart = false
 
-let obj4 = {
-    "name" : "toto",
-    "id" : 1,
-    "color" : "red"
-}
+    let myCart = []
 
-let obj5 = {
-    "name" : "toto",
-    "id" : 1,
-    "color" : "green"
-}
-
-let obj6 = {
-    "name" : "tata",
-    "id" : 3,
-    "color" : "red"
-}
-
-let array = []
-
-array.push(obj1)
-array.push(obj2)
-array.push(obj3)
-
-console.log(array)
-
-let arrayJson = JSON.stringify(array)
-
-console.log(arrayJson)
-
-let inCart = false;
-
-let jsonToArray = JSON.parse(arrayJson, (prop, val) => {
-    if (val.id == obj4.id && val.color == obj4.color) {
-        val.qty++
-        inCart = true
+    if (localStorage.getItem("myCart")) {
+        console.log("existe")
+        myCart = JSON.parse(localStorage.getItem("myCart"))
     }
-})
 
-if (!inCart) {
-    jsonToArray.push(obj4)
+    const obj = obj6
+
+    for (const product of myCart) {
+        if (product.id == obj.id && product.color == obj.color) {
+            product.qty++
+            inCart = true
+        }
+    }
+
+
+    if (!inCart) {
+        obj.qty = 1
+        myCart.push(obj)
+    }
+
+    localStorage.setItem("myCart", JSON.stringify(myCart))
+
 }
 
-console.log(jsonToArray)*/
+test()*/
