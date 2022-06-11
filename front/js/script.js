@@ -19,12 +19,12 @@ async function displayProducts() {
 
         const elemLink = document.createElement("a");
         const elemArticle = document.createElement("article");
-        const elemIllustration = document.createElement("img");
+        const elemImg = document.createElement("img");
         const elemTitle = document.createElement("h3");
         const elemDescription = document.createElement("p");
 
-        elemIllustration.setAttribute("src", product.imageUrl);
-        elemIllustration.setAttribute("alt", product.altTxt);
+        elemImg.setAttribute("src", product.imageUrl);
+        elemImg.setAttribute("alt", product.altTxt);
 
         elemTitle.setAttribute("class", "ProductName");
         elemTitle.textContent = product.name;
@@ -34,7 +34,7 @@ async function displayProducts() {
 
         elemLink.setAttribute("href", `./product.html?id=${product._id}`);
 
-        elemArticle.appendChild(elemIllustration);
+        elemArticle.appendChild(elemImg);
         elemArticle.appendChild(elemTitle);
         elemArticle.appendChild(elemDescription);
 
@@ -46,36 +46,3 @@ async function displayProducts() {
 }
 
 displayProducts();
-
-/*function test() {
-
-
-    let inCart = false
-
-    let myCart = []
-
-    if (localStorage.getItem("myCart")) {
-        console.log("existe")
-        myCart = JSON.parse(localStorage.getItem("myCart"))
-    }
-
-    const obj = obj6
-
-    for (const product of myCart) {
-        if (product.id == obj.id && product.color == obj.color) {
-            product.qty++
-            inCart = true
-        }
-    }
-
-
-    if (!inCart) {
-        obj.qty = 1
-        myCart.push(obj)
-    }
-
-    localStorage.setItem("myCart", JSON.stringify(myCart))
-
-}
-
-test()*/
