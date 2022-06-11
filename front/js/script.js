@@ -1,42 +1,39 @@
-function collectProduct() {
-    return fetch("http://localhost:3000/api/products")
+async function fetchProduct(id = "") {
+    const products= await fetch(`http://localhost:3000/api/products/${id}`)
+    return products.json();
 }
 
-function displayProducts() {
-    collectProduct()
-    .then(function(res) {
-        return res.json()
-    })
-    .then(function(productsList){
-        for (let i in productsList ) {
+async function displayProducts() {
+    const products = await fetchProduct()
 
-            let elemLink = document.createElement("a");
-            let elemArticle = document.createElement("article");
-            let elemIllustration = document.createElement("img");
-            let elemTitle = document.createElement("h3");
-            let elemDescription = document.createElement("p");
+    for (let product of products ) {
 
-            elemIllustration.setAttribute("src", productsList[i].imageUrl);
-            elemIllustration.setAttribute("alt", productsList[i].altTxt);
+        const elemLink = document.createElement("a");
+        const elemArticle = document.createElement("article");
+        const elemIllustration = document.createElement("img");
+        const elemTitle = document.createElement("h3");
+        const elemDescription = document.createElement("p");
 
-            elemTitle.setAttribute("class", "ProductName");
-            elemTitle.textContent = productsList[i].name;
+        elemIllustration.setAttribute("src", product.imageUrl);
+        elemIllustration.setAttribute("alt", product.altTxt);
 
-            elemDescription.setAttribute("class", "productDescription");
-            elemDescription.textContent = productsList[i].description;
+        elemTitle.setAttribute("class", "ProductName");
+        elemTitle.textContent = product.name;
 
-            elemLink.setAttribute("href", "./product.html?id=" + productsList[i]._id);
+        elemDescription.setAttribute("class", "productDescription");
+        elemDescription.textContent = product.description;
 
-            elemArticle.appendChild(elemIllustration);
-            elemArticle.appendChild(elemTitle);
-            elemArticle.appendChild(elemDescription);
+        elemLink.setAttribute("href", `./product.html?id=${product._id}`);
 
-            elemLink.appendChild(elemArticle);
-            
+        elemArticle.appendChild(elemIllustration);
+        elemArticle.appendChild(elemTitle);
+        elemArticle.appendChild(elemDescription);
 
-            document.getElementById("items").appendChild(elemLink);
-        }
-    })
+        elemLink.appendChild(elemArticle);
+        
+
+        document.getElementById("items").appendChild(elemLink);
+    }
 }
 
 displayProducts();

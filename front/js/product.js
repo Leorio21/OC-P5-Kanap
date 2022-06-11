@@ -1,45 +1,39 @@
-function collectProduct() {
-    let url = new URL(window.location.href);
-    let id = url.searchParams.get("id");
-
-    return fetch("http://localhost:3000/api/products/" + id)
+async function fetchProduct(id = "") {
+    const product = await fetch(`http://localhost:3000/api/products/${id}`);
+    return product.json();
 }
 
-function displayProduct() {
-    collectProduct()
-    .then(function(res) {
-        if (res.ok) {
-            return res.json();
-        }
-    })
-    .then(function(product){
-        let tagTitle = document.getElementsByTagName("title");
-        tagTitle[0].innerHTML = product.name;
+async function displayProduct() {
 
-        let elemIllustration = document.createElement("img");
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("id");
 
-        elemIllustration.setAttribute("src", product.imageUrl);
-        elemIllustration.setAttribute("alt", product.altTxt);
+    const product = await fetchProduct(id)
 
-        document.getElementsByClassName("item__img")[0].appendChild(elemIllustration);
+    document.querySelector("head > title").innerHTML = product.name;
 
-        document.getElementById("title").textContent = product.name;
+    const elemIllustration = document.createElement("img");
 
-        document.getElementById("price").textContent = product.price;
+    elemIllustration.setAttribute("src", product.imageUrl);
+    elemIllustration.setAttribute("alt", product.altTxt);
 
-        document.getElementById("description").textContent = product.description;
+    document.querySelector(".item .item__img").appendChild(elemIllustration);
 
-        for (let i in product.colors) {
-            let elemOption = document.createElement("option");
+    document.getElementById("title").textContent = product.name;
 
-            elemOption.setAttribute("value", product.colors[i]);
-            elemOption.textContent = product.colors[i];
+    document.getElementById("price").textContent = product.price;
 
-            document.getElementById("colors").appendChild(elemOption);
-        }
+    document.getElementById("description").textContent = product.description;
 
+    for (let color of product.colors) {
+        const elemOption = document.createElement("option");
 
-    })
+        elemOption.setAttribute("value", color);
+        elemOption.textContent = color;
+
+        document.getElementById("colors").appendChild(elemOption);
+    }
+
 }
 
 displayProduct();
