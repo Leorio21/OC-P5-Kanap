@@ -30,17 +30,66 @@ function displayClear() {
     document.getElementById("cart__items").innerHTML = ""
 }
 
+/**
+ * It removes an item from the cart by finding the item with the matching id and color and then
+ * removing it.
+ * @param id - the id of the product
+ * @param color - the color of the item
+ */
+function removeHtmlItem(id, color) {
+    const elem = document.getElementsByClassName("cart__item")
+    for (let item of elem) {
+        if (item.getAttribute("data-id") == id && item.getAttribute("data-color") == color) {
+            item.remove()
+        }
+    }
+}
 
+/**
+ * If the quantity is greater than 0, then update the quantity of the product in the cart. Otherwise,
+ * remove the product from the cart.
+ * @param id - the id of the product
+ * @param color - the color of the product
+ * @param quantity - the new quantity of the product
+ * @param pos - the position of the product in the cart
+ */
 function updateCart(id, color, quantity) {
-    myCart = getCart()
+    const myCart = getCart()
     
+    let index = 0
+    let i = 0
+
     for (const product of myCart) {
         if (product.id == id && product.color == color) {
-            product.quantity = quantity
+            index = i
         }
+        i++
+    }
+
+    if (quantity > 0) {
+        myCart[index].quantity = quantity
+    } else {
+        myCart.splice(index, 1)
     }
 
     localStorage.setItem("myCart", JSON.stringify(myCart))
+}
+
+async function refreshTotal() {
+    const myCart = getCart()
+
+    let totalQuantity = 0
+    let totalPrice = 0
+
+    for (let cartProduct of myCart) {
+        const product = await fetchProduct(cartProduct.id)
+
+        totalQuantity += cartProduct.quantity
+        totalPrice += (product.price * cartProduct.quantity)
+    }
+
+    document.getElementById("totalQuantity").innerHTML = totalQuantity
+    document.getElementById("totalPrice").innerHTML = totalPrice
 }
 
 /**
@@ -52,8 +101,6 @@ async function displayProducts() {
 
     let totalQuantity = 0
     let totalPrice = 0
-
-    let pos = 0
 
     for (let cartProduct of myCart) {
         const product = await fetchProduct(cartProduct.id)
@@ -114,8 +161,7 @@ async function displayProducts() {
             let quantity = parseInt(inputQuantityElem.value)
             if (quantity > 0 && quantity <= 100) {
                 updateCart(cartProduct.id, cartProduct.color, quantity)
-                displayClear()
-                displayProducts()
+                refreshTotal()
             } else {
                 alert("Vous devez saisir une quantité d'article entre 1 et 100")
             }
@@ -130,6 +176,11 @@ async function displayProducts() {
         const deleteElem  = document.createElement("p")
         deleteElem.setAttribute("class", "deleteItem")
         deleteElem.innerHTML = "Supprimer"
+        deleteElem.addEventListener('click', (event) => {
+                removeHtmlItem(cartProduct.id, cartProduct.color)
+                updateCart(cartProduct.id, cartProduct.color, 0)
+                refreshTotal()
+        })
 
         divDeleteElem.appendChild(deleteElem)
 
@@ -146,18 +197,8 @@ async function displayProducts() {
         document.getElementById("totalQuantity").innerHTML = totalQuantity
         document.getElementById("totalPrice").innerHTML = totalPrice
 
-        pos++
     }
     
 }
-/*
-document.getElementsByClassName("itemQuantity").onclick = function() {
-    alert("click")
-}
-
-/*document.getElementById("totalPrice").onclick = function() {
-    document.getElementById("cart__items").innerHTML= ""
-    displayProducts()
-}*/
 
 displayProducts()
