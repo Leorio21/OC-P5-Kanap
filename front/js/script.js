@@ -4,8 +4,8 @@
  * @returns A promise.
  */
 async function fetchProduct(id = "") {
-    const products= await fetch(`http://localhost:3000/api/products/${id}`)
-    return products.json();
+    const products = await fetch(`http://localhost:3000/api/products/${id}`)
+    return products.json()
 }
 
 /**
@@ -17,31 +17,31 @@ async function displayProducts() {
 
     for (let product of products ) {
 
-        const elemLink = document.createElement("a");
-        const elemArticle = document.createElement("article");
-        const elemImg = document.createElement("img");
-        const elemTitle = document.createElement("h3");
-        const elemDescription = document.createElement("p");
+        const linkElem = document.createElement("a");
+        const articleElem = document.createElement("article");
+        const imgElem = document.createElement("img");
+        const titleElem = document.createElement("h3");
+        const descriptionElem = document.createElement("p");
 
-        elemImg.setAttribute("src", product.imageUrl);
-        elemImg.setAttribute("alt", product.altTxt);
+        imgElem.setAttribute("src", product.imageUrl);
+        imgElem.setAttribute("alt", product.altTxt);
 
-        elemTitle.setAttribute("class", "ProductName");
-        elemTitle.textContent = product.name;
+        titleElem.setAttribute("class", "ProductName");
+        titleElem.textContent = product.name;
 
-        elemDescription.setAttribute("class", "productDescription");
-        elemDescription.textContent = product.description;
+        descriptionElem.setAttribute("class", "productDescription");
+        descriptionElem.textContent = product.description;
 
-        elemLink.setAttribute("href", `./product.html?id=${product._id}`);
+        linkElem.setAttribute("href", `./product.html?id=${product._id}`);
 
-        elemArticle.appendChild(elemImg);
-        elemArticle.appendChild(elemTitle);
-        elemArticle.appendChild(elemDescription);
+        articleElem.appendChild(imgElem);
+        articleElem.appendChild(titleElem);
+        articleElem.appendChild(descriptionElem);
 
-        elemLink.appendChild(elemArticle);
+        linkElem.appendChild(articleElem);
         
 
-        document.getElementById("items").appendChild(elemLink);
+        document.getElementById("items").appendChild(linkElem);
     }
 }
 

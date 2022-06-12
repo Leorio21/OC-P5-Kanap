@@ -4,8 +4,8 @@
  * @returns A promise that resolves to the product.json()
  */
 async function fetchProduct(id = "") {
-    const product = await fetch(`http://localhost:3000/api/products/${id}`);
-    return product.json();
+    const product = await fetch(`http://localhost:3000/api/products/${id}`)
+    return product.json()
 }
 
 /**

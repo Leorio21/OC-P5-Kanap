@@ -4,8 +4,8 @@
  * @returns A promise that resolves to the product.json()
  */
  async function fetchProduct(id = "") {
-    const product = await fetch(`http://localhost:3000/api/products/${id}`);
-    return product.json();
+    const product = await fetch(`http://localhost:3000/api/products/${id}`)
+    return product.json()
 }
 
 /**
@@ -23,12 +23,37 @@
     return cart
 }
 
+/**
+ * It clears the cart by setting the innerHTML of the cart__items element to an empty string.
+ */
+function displayClear() {
+    document.getElementById("cart__items").innerHTML = ""
+}
+
+
+function updateCart(id, color, quantity) {
+    myCart = getCart()
+    
+    for (const product of myCart) {
+        if (product.id == id && product.color == color) {
+            product.quantity = quantity
+        }
+    }
+
+    localStorage.setItem("myCart", JSON.stringify(myCart))
+}
+
+/**
+ * It displays the products in the cart
+ */
 async function displayProducts() {
 
     const myCart = getCart()
 
     let totalQuantity = 0
     let totalPrice = 0
+
+    let pos = 0
 
     for (let cartProduct of myCart) {
         const product = await fetchProduct(cartProduct.id)
@@ -85,6 +110,16 @@ async function displayProducts() {
         inputQuantityElem.setAttribute("min", "1")
         inputQuantityElem.setAttribute("max", "100")
         inputQuantityElem.setAttribute("value", cartProduct.quantity)
+        inputQuantityElem.addEventListener('change', (event) => {
+            let quantity = parseInt(inputQuantityElem.value)
+            if (quantity > 0 && quantity <= 100) {
+                updateCart(cartProduct.id, cartProduct.color, quantity)
+                displayClear()
+                displayProducts()
+            } else {
+                alert("Vous devez saisir une quantité d'article entre 1 et 100")
+            }
+        })
 
         divQuantityElem.appendChild(quantityElem)
         divQuantityElem.appendChild(inputQuantityElem)
@@ -110,8 +145,19 @@ async function displayProducts() {
         document.getElementById("cart__items").appendChild(articleElem)
         document.getElementById("totalQuantity").innerHTML = totalQuantity
         document.getElementById("totalPrice").innerHTML = totalPrice
+
+        pos++
     }
     
 }
+/*
+document.getElementsByClassName("itemQuantity").onclick = function() {
+    alert("click")
+}
+
+/*document.getElementById("totalPrice").onclick = function() {
+    document.getElementById("cart__items").innerHTML= ""
+    displayProducts()
+}*/
 
 displayProducts()
