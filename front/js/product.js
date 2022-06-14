@@ -8,13 +8,19 @@ async function fetchProduct(id = "") {
     return product.json()
 }
 
+function getUrlData(paramToSearch) {
+    const url = new URL(window.location.href);
+    const data = url.searchParams.get(paramToSearch);
+
+    return data
+}
+
 /**
  * It fetches the product data from the server, then it updates the page with the product data.
  */
 async function displayProduct() {
 
-    const url = new URL(window.location.href);
-    const id = url.searchParams.get("id");
+    const id = getUrlData("id")
 
     const product = await fetchProduct(id)
 
@@ -97,9 +103,9 @@ function addToCart(newProduct) {
         myCart.push(newProduct)
     }
 
-    alert("Votre article à été ajouté au panier")
-
     localStorage.setItem("myCart", JSON.stringify(myCart))
+
+    alert("Votre article à été ajouté au panier")
 }
 
 /* Adding an event listener to the button with the id "addToCart". */
