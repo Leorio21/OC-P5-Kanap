@@ -8,6 +8,11 @@ async function fetchProduct(id = "") {
     return product.json()
 }
 
+/**
+ * It takes a parameter, searches the URL for that parameter, and returns the value of that parameter.
+ * @param paramToSearch - The parameter you want to search for in the URL.
+ * @returns The value of the parameter in the URL.
+ */
 function getUrlData(paramToSearch) {
     const url = new URL(window.location.href);
     const data = url.searchParams.get(paramToSearch);

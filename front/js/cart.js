@@ -89,6 +89,11 @@ async function refreshTotal() {
     document.getElementById("totalPrice").innerHTML = totalPrice
 }
 
+/**
+ * It takes a data object, sends it to the server, and returns the response as a JSON object.
+ * @param data - {
+ * @returns The response from the server.
+ */
 async function fetchOrder(data) {
     const reponse = await fetch("http://localhost:3000/api/products/order", {
             method: "POST",
@@ -102,6 +107,8 @@ async function fetchOrder(data) {
     return reponse.json()
 }
 
+/* It's adding an event listener to the element with the id "order". When the element is clicked, the
+function is called. */
 document.getElementById("order").onclick = async function(event) {
     event.preventDefault();
     let contactIsValid = true
@@ -124,31 +131,26 @@ document.getElementById("order").onclick = async function(event) {
     document.getElementById("cityErrorMsg").innerHTML = cityErrorTxt
     document.getElementById("emailErrorMsg").innerHTML = emailErrorTxt
 
-    //verif firstName
     if (!contact.firstName.match(/^[a-z -éèêaàëïöûô]+$/i)) {
         contactIsValid = false
         firstNameErrorTxt = "Prénom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret"
     }
 
-    //verif LastName
     if (!contact.lastName.match(/^[a-z -]+$/i)) {
         contactIsValid = false
         lastNameErrorTxt = "Nom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret"
     }
 
-    //verif adresse non vide
     if (!contact.address.match(/^[0-9a-z -]+$/i)) {
         contactIsValid = false
         addressErrorTxt = "Adresse invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z 0-9 espace tiret"
     }
 
-    //verif ville number  +A-z
     if (!contact.city.match(/^[0-9]{5} [a-z -]+$/i)) {
         contactIsValid = false
         cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme:<br>00000 VILLE"
     }
 
-    //verif mail a@a.fr
     if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9 -]+)\.([a-z0-9 -]{2,})$/i)) {
         contactIsValid = false
         emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme:<br>example@example.xx"
