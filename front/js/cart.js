@@ -48,20 +48,19 @@ function removeHtmlItem(id, color) {
  */
 function updateCart(id, color, quantity) {
     const myCart = getCart()
-    
-    let index = 0
-    let i = 0
-
-    for (const product of myCart) {
-        if (product.id == id && product.color == color) {
-            break
-        }
-        index++
-    }
 
     if (quantity > 0) {
         myCart[index].quantity = quantity
     } else {
+        let index = 0
+
+        for (const product of myCart) {
+            if (product.id == id && product.color == color) {
+                break
+            }
+            index++
+        }
+        
         myCart.splice(index, 1)
     }
 
