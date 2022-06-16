@@ -3,7 +3,7 @@
  * @param [id] - The id of the product you want to fetch.
  * @returns A promise that resolves to the product.json()
  */
- async function fetchProduct(id = "") {
+async function fetchProduct(id = "") {
     const product = await fetch(`http://localhost:3000/api/products/${id}`)
     return product.json()
 }
@@ -13,7 +13,7 @@
  * array.
  * @returns The cart array.
  */
- function getCart() {
+function getCart() {
     let cart = []
 
     if (localStorage.getItem("myCart")) {
@@ -118,6 +118,7 @@ document.getElementById("order").onclick = async function(event) {
         city: document.getElementById("city").value,
         email: document.getElementById("email").value
     }
+    console.log(contact)
     let firstNameErrorTxt = " "
     let lastNameErrorTxt = " "
     let addressErrorTxt = " "
@@ -130,7 +131,7 @@ document.getElementById("order").onclick = async function(event) {
     document.getElementById("cityErrorMsg").innerHTML = cityErrorTxt
     document.getElementById("emailErrorMsg").innerHTML = emailErrorTxt
 
-    if (!contact.firstName.match(/^[a-z -éèêaàëïöûô]+$/i)) {
+    if (!contact.firstName.match(/^[a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
         contactIsValid = false
         firstNameErrorTxt = "Prénom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret"
     }
@@ -140,7 +141,7 @@ document.getElementById("order").onclick = async function(event) {
         lastNameErrorTxt = "Nom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret"
     }
 
-    if (!contact.address.match(/^[0-9a-z -]+$/i)) {
+    if (!contact.address.match(/^[0-9a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
         contactIsValid = false
         addressErrorTxt = "Adresse invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z 0-9 espace tiret"
     }
@@ -150,7 +151,7 @@ document.getElementById("order").onclick = async function(event) {
         cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme:<br>00000 VILLE"
     }
 
-    if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9 -]+)\.([a-z0-9 -]{2,})$/i)) {
+    if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9 -]+)\.([a-z -]{2,})$/i)) {
         contactIsValid = false
         emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme:<br>example@example.xx"
     }
@@ -164,7 +165,7 @@ document.getElementById("order").onclick = async function(event) {
         const formData = {contact, products}
         const response = await fetchOrder(formData)
 
-        localStorage.removeItem("myCart")
+        //localStorage.removeItem("myCart")
 
         document.location.href=`./confirmation.html?orderId=${response.orderId}`;
 
