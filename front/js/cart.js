@@ -151,7 +151,7 @@ document.getElementById("order").onclick = async function(event) {
         cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme:<br>00000 VILLE"
     }
 
-    if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9 -]+)\.([a-z -]{2,})$/i)) {
+    if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9-]+)\.([a-z-]{2,})$/i)) {
         contactIsValid = false
         emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme:<br>example@example.xx"
     }
