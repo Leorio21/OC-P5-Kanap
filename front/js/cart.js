@@ -84,8 +84,8 @@ async function refreshTotal() {
         totalPrice += (product.price * cartProduct.quantity)
     }
 
-    document.getElementById("totalQuantity").innerHTML = totalQuantity
-    document.getElementById("totalPrice").innerHTML = totalPrice
+    document.getElementById("totalQuantity").textContent = totalQuantity
+    document.getElementById("totalPrice").textContent = totalPrice
 }
 
 /**
@@ -125,11 +125,11 @@ document.getElementById("order").onclick = async function(event) {
     let cityErrorTxt = " "
     let emailErrorTxt = " "
 
-    document.getElementById("firstNameErrorMsg").innerHTML = firstNameErrorTxt
-    document.getElementById("lastNameErrorMsg").innerHTML = lastNameErrorTxt
-    document.getElementById("addressErrorMsg").innerHTML = addressErrorTxt
-    document.getElementById("cityErrorMsg").innerHTML = cityErrorTxt
-    document.getElementById("emailErrorMsg").innerHTML = emailErrorTxt
+    document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt
+    document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt
+    document.getElementById("addressErrorMsg").textContent = addressErrorTxt
+    document.getElementById("cityErrorMsg").textContent = cityErrorTxt
+    document.getElementById("emailErrorMsg").textContent = emailErrorTxt
 
     if (!contact.firstName.match(/^[a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
         contactIsValid = false
@@ -170,11 +170,11 @@ document.getElementById("order").onclick = async function(event) {
         document.location.href=`./confirmation.html?orderId=${response.orderId}`;
 
     } else {
-        document.getElementById("firstNameErrorMsg").innerHTML = firstNameErrorTxt
-        document.getElementById("lastNameErrorMsg").innerHTML = lastNameErrorTxt
-        document.getElementById("addressErrorMsg").innerHTML = addressErrorTxt
-        document.getElementById("cityErrorMsg").innerHTML = cityErrorTxt
-        document.getElementById("emailErrorMsg").innerHTML = emailErrorTxt
+        document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt
+        document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt
+        document.getElementById("addressErrorMsg").textContent = addressErrorTxt
+        document.getElementById("cityErrorMsg").textContent = cityErrorTxt
+        document.getElementById("emailErrorMsg").textContent = emailErrorTxt
     }
 }
 
@@ -215,13 +215,13 @@ async function displayProducts() {
         divDescriptionElem.setAttribute("class", "cart__item__content__description")
 
         const titleElem = document.createElement("h2")
-        titleElem.innerHTML = product.name
+        titleElem.textContent = product.name
 
         const colorElem = document.createElement("p")
-        colorElem.innerHTML = cartProduct.color
+        colorElem.textContent = cartProduct.color
 
         const priceElem = document.createElement("p")
-        priceElem.innerHTML = `${product.price},00 €`
+        priceElem.textContent = `${product.price},00 €`
 
         divDescriptionElem.appendChild(titleElem)
         divDescriptionElem.appendChild(colorElem)
@@ -234,7 +234,7 @@ async function displayProducts() {
         divQuantityElem.setAttribute("class", "cart__item__content__settings__quantity")
 
         const quantityElem = document.createElement("p")
-        quantityElem.innerHTML = "Qté : "
+        quantityElem.textContent = "Qté : "
 
         const inputQuantityElem = document.createElement("input")
         inputQuantityElem.setAttribute("type", "number")
@@ -261,7 +261,7 @@ async function displayProducts() {
 
         const deleteElem  = document.createElement("p")
         deleteElem.setAttribute("class", "deleteItem")
-        deleteElem.innerHTML = "Supprimer"
+        deleteElem.textContent = "Supprimer"
         deleteElem.addEventListener('click', (event) => {
                 removeHtmlItem(cartProduct.id, cartProduct.color)
                 updateCart(cartProduct.id, cartProduct.color, 0)
@@ -280,8 +280,8 @@ async function displayProducts() {
         articleElem.appendChild(divContentElem)
 
         document.getElementById("cart__items").appendChild(articleElem)
-        document.getElementById("totalQuantity").innerHTML = totalQuantity
-        document.getElementById("totalPrice").innerHTML = totalPrice
+        document.getElementById("totalQuantity").textContent = totalQuantity
+        document.getElementById("totalPrice").textContent = totalPrice
 
     }
     
