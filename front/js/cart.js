@@ -118,7 +118,7 @@ document.getElementById("order").onclick = async function(event) {
         city: document.getElementById("city").value,
         email: document.getElementById("email").value
     }
-    console.log(contact)
+    
     let firstNameErrorTxt = " "
     let lastNameErrorTxt = " "
     let addressErrorTxt = " "
