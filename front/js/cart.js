@@ -146,14 +146,14 @@ document.getElementById("order").onclick = async function(event) {
         addressErrorTxt = "Adresse invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z 0-9 espace tiret"
     }
 
-    if (!contact.city.match(/^[0-9]{5} [a-z -]+$/i)) {
+    if (!contact.city.match(/^[0-9]{5} [a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
         contactIsValid = false
-        cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme:<br>00000 VILLE"
+        cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme: 00000 VILLE"
     }
 
     if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9-]+)\.([a-z-]{2,})$/i)) {
         contactIsValid = false
-        emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme:<br>example@example.xx"
+        emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme: example@example.xx"
     }
     
     if (contactIsValid) {
