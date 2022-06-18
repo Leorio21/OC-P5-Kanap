@@ -15,7 +15,7 @@ function getUrlData(paramToSearch) {
  */
 function displayOrderId() {
     const orderId = getUrlData("orderId")
-    document.getElementById("orderId").innerHTML = orderId
+    document.getElementById("orderId").textContent = orderId
 }
 
 displayOrderId()

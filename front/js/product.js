@@ -31,7 +31,7 @@ async function displayProduct() {
 
     setCurrentProductId(id)
 
-    document.querySelector("head > title").innerHTML = product.name;
+    document.querySelector("head > title").textContent = product.name;
 
     const elemImg = document.createElement("img");
 
