@@ -1,11 +1,17 @@
+let productList = new Map();
 /**
  * It fetches a product from the server and returns the product as a JSON object.
  * @param [id] - The id of the product you want to fetch.
  * @returns A promise that resolves to the product.json()
  */
 async function fetchProduct(id = "") {
-    const product = await fetch(`http://localhost:3000/api/products/${id}`)
-    return product.json()
+    if (productList[id]) {
+        return productList[id];
+    }
+    const product = await fetch(`http://localhost:3000/api/products/${id}`);
+    json = product.json()
+    productList[id] = json;
+    return json;
 }
 
 /**
@@ -14,13 +20,13 @@ async function fetchProduct(id = "") {
  * @returns The cart array.
  */
 function getCart() {
-    let cart = []
+    let cart = [];
 
     if (localStorage.getItem("myCart")) {
-        cart = JSON.parse(localStorage.getItem("myCart"))
+        cart = JSON.parse(localStorage.getItem("myCart"));
     }
 
-    return cart
+    return cart;
 }
 
 /**
@@ -30,10 +36,10 @@ function getCart() {
  * @param color - the color of the item
  */
 function removeHtmlItem(id, color) {
-    const elem = document.getElementsByClassName("cart__item")
+    const elem = document.getElementsByClassName("cart__item");
     for (let item of elem) {
         if (item.getAttribute("data-id") == id && item.getAttribute("data-color") == color) {
-            item.remove()
+            item.remove();
         }
     }
 }
@@ -47,24 +53,19 @@ function removeHtmlItem(id, color) {
  * @param pos - the position of the product in the cart
  */
 function updateCart(id, color, quantity) {
-    const myCart = getCart()
-    
-    let index = 0
+    const myCart = getCart();
 
-    for (const product of myCart) {
-        if (product.id == id && product.color == color) {
-            break
-        }
-        index++
-    }
+    const productToFind = (product) => product.id == id && product.color == color;
+
+    let index = myCart.findIndex(productToFind)
 
     if (quantity > 0) {
-        myCart[index].quantity = quantity
+        myCart[index].quantity = quantity;
     } else {
-        myCart.splice(index, 1)
+        myCart.splice(index, 1);
     }
 
-    localStorage.setItem("myCart", JSON.stringify(myCart))
+    localStorage.setItem("myCart", JSON.stringify(myCart));
 }
 
 /**
@@ -106,75 +107,79 @@ async function fetchOrder(data) {
     return reponse.json()
 }
 
-/* It's adding an event listener to the element with the id "order". When the element is clicked, the
-function is called. */
+
+/* Adding an event listener to the element with the id "order". */
 document.getElementById("order").onclick = async function(event) {
     event.preventDefault();
-    let contactIsValid = true
-    const contact = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        email: document.getElementById("email").value
-    }
-    
-    let firstNameErrorTxt = " "
-    let lastNameErrorTxt = " "
-    let addressErrorTxt = " "
-    let cityErrorTxt = " "
-    let emailErrorTxt = " "
-
-    document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt
-    document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt
-    document.getElementById("addressErrorMsg").textContent = addressErrorTxt
-    document.getElementById("cityErrorMsg").textContent = cityErrorTxt
-    document.getElementById("emailErrorMsg").textContent = emailErrorTxt
-
-    if (!contact.firstName.match(/^[a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
-        contactIsValid = false
-        firstNameErrorTxt = "Prénom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret"
-    }
-
-    if (!contact.lastName.match(/^[a-z -]+$/i)) {
-        contactIsValid = false
-        lastNameErrorTxt = "Nom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret"
-    }
-
-    if (!contact.address.match(/^[0-9a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
-        contactIsValid = false
-        addressErrorTxt = "Adresse invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z 0-9 espace tiret"
-    }
-
-    if (!contact.city.match(/^[0-9]{5} [a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
-        contactIsValid = false
-        cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme: 00000 VILLE"
-    }
-
-    if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9-]+)\.([a-z-]{2,})$/i)) {
-        contactIsValid = false
-        emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme: example@example.xx"
-    }
-    
-    if (contactIsValid) {
-        const myCart = getCart()
-        let products = []
-        for (let product of myCart) {
-            products.push(product.id)
-        }
-        const formData = {contact, products}
-        const response = await fetchOrder(formData)
-
-        //localStorage.removeItem("myCart")
-
-        document.location.href=`./confirmation.html?orderId=${response.orderId}`;
-
+    const myCart = getCart();
+    if (myCart.length == 0) {
+        alert('Votre panier est vide')
     } else {
-        document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt
-        document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt
-        document.getElementById("addressErrorMsg").textContent = addressErrorTxt
-        document.getElementById("cityErrorMsg").textContent = cityErrorTxt
-        document.getElementById("emailErrorMsg").textContent = emailErrorTxt
+        let contactIsValid = true;
+        const contact = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            email: document.getElementById("email").value
+        }
+        
+        let firstNameErrorTxt = " ";
+        let lastNameErrorTxt = " ";
+        let addressErrorTxt = " ";
+        let cityErrorTxt = " ";
+        let emailErrorTxt = " ";
+
+        document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt;
+        document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt;
+        document.getElementById("addressErrorMsg").textContent = addressErrorTxt;
+        document.getElementById("cityErrorMsg").textContent = cityErrorTxt;
+        document.getElementById("emailErrorMsg").textContent = emailErrorTxt;
+
+        if (!contact.firstName.match(/^[a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
+            contactIsValid = false;
+            firstNameErrorTxt = "Prénom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret";
+        }
+
+        if (!contact.lastName.match(/^[a-z -]+$/i)) {
+            contactIsValid = false;
+            lastNameErrorTxt = "Nom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret";
+        }
+
+        if (!contact.address.match(/^[0-9a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
+            contactIsValid = false;
+            addressErrorTxt = "Adresse invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z 0-9 espace tiret";
+        }
+
+        if (!contact.city.match(/^[0-9]{5} [a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
+            contactIsValid = false;
+            cityErrorTxt = "Ville invalide - Ce champ ne peut être vide - La ville doit être sous la forme: 00000 VILLE";
+        }
+
+        if (!contact.email.match(/^([a-z0-9-_\.]+)\@([a-z0-9-]+)\.([a-z-]{2,})$/i)) {
+            contactIsValid = false;
+            emailErrorTxt = "Email invalide - Ce champ ne peut être vide - L'adresse mail doit être sous la forme: example@example.xx";
+        }
+        
+        if (contactIsValid) {
+            let products = [];
+            for (let product of myCart) {
+                products.push(product.id);
+            }
+            const formData = {contact, products};
+            const response = await fetchOrder(formData);
+
+            localStorage.removeItem("myCart");
+
+            document.location.href=`./confirmation.html?orderId=${response.orderId}`;
+
+        } else {
+            document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt;
+            document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt;
+            document.getElementById("addressErrorMsg").textContent = addressErrorTxt;
+            document.getElementById("cityErrorMsg").textContent = cityErrorTxt;
+            document.getElementById("emailErrorMsg").textContent = emailErrorTxt;
+        }
     }
 }
 
