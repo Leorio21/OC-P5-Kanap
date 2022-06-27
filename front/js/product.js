@@ -103,7 +103,7 @@ function addToCart(newProduct) {
             inCart = true
         }
     }
-
+    
     if (!inCart) {
         myCart.push(newProduct)
     }
@@ -115,32 +115,30 @@ function addToCart(newProduct) {
 
 /* Adding an event listener to the button with the id "addToCart". */
 document.getElementById("addToCart").onclick = function() {
-    let quantityValid = false
-    let colorValid = false
+    let quantityValid = true
+    let colorValid = true
     let textAlert = ""
 
     const quantity = parseInt(document.getElementById("quantity").value)
 
     
-    if (document.getElementById("colors").value) {
-        colorValid = true
-    } else {
+    if (!document.getElementById("colors").value) {
+        colorValid = false
         textAlert += "Vous devez choisir une couleur\n"
     }
     
-    if (quantity > 0 && quantity <= 100) {
-        quantityValid = true
-    } else {
+    if (quantity < 1 || quantity > 100) {
+        quantityValid = false
         textAlert += "Vous devez saisir une quantité d'article entre 1 et 100\n"
     }
 
     if (colorValid && quantityValid) {
-        let product = {id: "", color: "", quantity: 0}
-
-        product.id = getCurrentProductId()
-        product.color = document.getElementById("colors").value
-        product.quantity = quantity
-
+        const product = {
+            id: getCurrentProductId(),
+            color: document.getElementById("colors").value,
+            quantity: quantity
+        }
+            
         addToCart(product)
     } else {
         alert(textAlert)

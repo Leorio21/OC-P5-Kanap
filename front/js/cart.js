@@ -130,12 +130,6 @@ document.getElementById("order").onclick = async function(event) {
         let cityErrorTxt = " ";
         let emailErrorTxt = " ";
 
-        document.getElementById("firstNameErrorMsg").textContent = firstNameErrorTxt;
-        document.getElementById("lastNameErrorMsg").textContent = lastNameErrorTxt;
-        document.getElementById("addressErrorMsg").textContent = addressErrorTxt;
-        document.getElementById("cityErrorMsg").textContent = cityErrorTxt;
-        document.getElementById("emailErrorMsg").textContent = emailErrorTxt;
-
         if (!contact.firstName.match(/^[a-zÀ-ÖØ-öø-ÿ -]+$/i)) {
             contactIsValid = false;
             firstNameErrorTxt = "Prénom invalide - Ce champ ne peut être vide - Caractères autorisés a-z A-Z espace tiret";
@@ -190,14 +184,10 @@ async function displayProducts() {
 
     const myCart = getCart()
 
-    let totalQuantity = 0
-    let totalPrice = 0
+    refreshTotal()
 
     for (let cartProduct of myCart) {
         const product = await fetchProduct(cartProduct.id)
-
-        totalQuantity += cartProduct.quantity
-        totalPrice += (product.price * cartProduct.quantity)
 
         const articleElem = document.createElement("article")
         articleElem.setAttribute("class", "cart__item")
@@ -285,8 +275,6 @@ async function displayProducts() {
         articleElem.appendChild(divContentElem)
 
         document.getElementById("cart__items").appendChild(articleElem)
-        document.getElementById("totalQuantity").textContent = totalQuantity
-        document.getElementById("totalPrice").textContent = totalPrice
 
     }
     
