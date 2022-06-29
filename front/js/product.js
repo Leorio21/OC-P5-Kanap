@@ -96,12 +96,11 @@ function getCart() {
 function addToCart(newProduct) {
     let inCart = false
     let myCart = getCart()
+    let index = myCart.findIndex((product) => product.id == newProduct.id && product.color == newProduct.color)
 
-    for (const product of myCart) {
-        if (product.id == newProduct.id && product.color == newProduct.color) {
-            product.quantity += newProduct.quantity
-            inCart = true
-        }
+    if (index >= 0) {
+        myCart[index].quantity += newProduct.quantity
+        inCart = true
     }
     
     if (!inCart) {

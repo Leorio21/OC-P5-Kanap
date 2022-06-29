@@ -55,15 +55,13 @@ function removeHtmlItem(id, color) {
 function updateCart(id, color, quantity) {
     const myCart = getCart();
 
-    const productToFind = (product) => product.id == id && product.color == color;
-
-    let index = myCart.findIndex(productToFind)
+    let index = myCart.findIndex((product) => product.id == id && product.color == color)
 
     switch(quantity) {
         case 0:
             myCart.splice(index, 1);
             break;
-            
+
         case -1:
             return myCart[index].quantity;
 
