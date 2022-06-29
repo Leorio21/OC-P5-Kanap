@@ -59,10 +59,16 @@ function updateCart(id, color, quantity) {
 
     let index = myCart.findIndex(productToFind)
 
-    if (quantity > 0) {
-        myCart[index].quantity = quantity;
-    } else {
-        myCart.splice(index, 1);
+    switch(quantity) {
+        case 0:
+            myCart.splice(index, 1);
+            break;
+            
+        case -1:
+            return myCart[index].quantity;
+
+        default:
+            myCart[index].quantity = quantity;
     }
 
     localStorage.setItem("myCart", JSON.stringify(myCart));
@@ -244,6 +250,7 @@ async function displayProducts() {
                 updateCart(cartProduct.id, cartProduct.color, quantity)
                 refreshTotal()
             } else {
+                inputQuantityElem.value = updateCart(cartProduct.id, cartProduct.color, -1)
                 alert("Vous devez saisir une quantité d'article entre 1 et 100")
             }
         })
